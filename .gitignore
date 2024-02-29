@@ -1,0 +1,42 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# Compiled output
+/FuelGuardianApp/dist
+/FuelGuardianApp/tmp
+/FuelGuardianApp/out-tsc
+/FuelGuardianApp/bazel-out
+
+# Node
+/FuelGuardianApp/node_modules
+/FuelGuardianAppnpm-debug.log
+/FuelGuardianAppyarn-error.log
+
+# IDEs and editors
+/FuelGuardianApp/.idea/
+/FuelGuardianApp/.project
+/FuelGuardianApp/.classpath
+/FuelGuardianApp/.c9/
+/FuelGuardianApp/*.launch
+/FuelGuardianApp/.settings/
+/FuelGuardianApp/*.sublime-workspace
+
+# Visual Studio Code
+/FuelGuardianApp/.vscode/*
+!/FuelGuardianApp/.vscode/settings.json
+!/FuelGuardianApp/.vscode/tasks.json
+!/FuelGuardianApp/.vscode/launch.json
+!/FuelGuardianApp/.vscode/extensions.json
+/FuelGuardianApp/.history/*
+
+# Miscellaneous
+/FuelGuardianApp/.angular/cache
+/FuelGuardianApp/.sass-cache/
+/FuelGuardianApp/connect.lock
+/FuelGuardianApp/coverage
+/FuelGuardianApp/libpeerconnection.log
+/FuelGuardianApptestem.log
+/FuelGuardianApp/typings
+
+# System files
+/FuelGuardianApp/.DS_Store
+/FuelGuardianApp/Thumbs.db
