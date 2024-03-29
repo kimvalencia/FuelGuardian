@@ -17,9 +17,21 @@ export class TripComponent {
   constructor(){
     this.addFuelUsageForm = new FormGroup({
       tripDate: new FormControl('',[Validators.required]),
-      distanceTraveled: new FormControl('', [Validators.required, Validators.min(0.1)]),
-      fuelConsumptionRate: new FormControl('', [Validators.required, Validators.min(0.1)])
+      distanceTraveled: new FormControl(null, [Validators.required, Validators.min(0.1)]),
+      fuelConsumptionRate: new FormControl('', [Validators.required, Validators.min(0.1)]),
     })
+  }
+
+  get tripDate():any {
+    return this.addFuelUsageForm.get('tripDate');
+  }
+
+  get distanceTraveled():any {
+    return this.addFuelUsageForm.get('distanceTraveled');
+  }
+
+  get fuelConsumptionRate():any{
+    return this.addFuelUsageForm.get('fuelConsumptionRate');
   }
 
   public fuelUsages: FuelUsage[] = [
@@ -56,12 +68,19 @@ export class TripComponent {
   }
 
   addTrip(){
+    this.addFuelUsageForm.controls.distanceTraveled.markAsTouched();
+    this.addFuelUsageForm.controls.distanceTraveled.markAsDirty();
+
+    console.log(this.addFuelUsageForm.controls.distanceTraveled);
+
     let _fuelUsage:FuelUsage= this.addFuelUsageForm.value;
 
     _fuelUsage.id = this.fuelUsages.length+1;
-    console.log(this.fuelUsages);
 
-    this.fuelUsages = [...this.fuelUsages, _fuelUsage];
-    //console.log(this.addFuelUsageForm);
+    if(this.addFuelUsageForm.valid){
+      this.fuelUsages = [...this.fuelUsages, _fuelUsage];
+      this.addFuelUsageForm.reset();
+      this.closeModal();
+    }
   }
 }
