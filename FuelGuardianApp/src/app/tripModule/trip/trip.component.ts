@@ -1,25 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FuelUsage } from '../../models/FuelUsage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { TripService } from '../../services/trip.service';
+import { Observable, delay } from 'rxjs';
 
 @Component({
   selector: 'app-trip',
   templateUrl: './trip.component.html',
   styleUrl: './trip.component.scss'
 })
-export class TripComponent {
+export class TripComponent implements OnInit {
 
   public isVisible:boolean = false;
   public isSaving:boolean = false;
+  public fuelUsages:FuelUsage[]=[];
 
   public addFuelUsageForm:any;
 
-  constructor(){
+  constructor(private tripService:TripService){
     this.addFuelUsageForm = new FormGroup({
       tripDate: new FormControl('',[Validators.required]),
       distanceTraveled: new FormControl(null, [Validators.required, Validators.min(0.1)]),
       fuelConsumptionRate: new FormControl('', [Validators.required, Validators.min(0.1)]),
     })
+    
+  }
+
+  ngOnInit(): void {
+    this.refreshData();
   }
 
   get tripDate():any {
@@ -34,26 +42,9 @@ export class TripComponent {
     return this.addFuelUsageForm.get('fuelConsumptionRate');
   }
 
-  public fuelUsages: FuelUsage[] = [
-    {
-      id: 1,
-      tripDate: new Date("02/11/2024"),
-      distanceTraveled: 89.1,
-      fuelConsumptionRate: 12.1
-    },
-    {
-      id: 2,
-      tripDate: new Date("02/25/2024"),
-      distanceTraveled: 40.6,
-      fuelConsumptionRate: 11.1
-    },
-    {
-      id: 3,
-      tripDate: new Date("02/25/2024"),
-      distanceTraveled: 49.8,
-      fuelConsumptionRate: 12.2
-    }
-  ]
+  private refreshData(){
+    this.fuelUsages= [...this.tripService.trips];
+  }
 
   computeFuelBurned(distance:number, consumptionRate:number):number {
     return distance / consumptionRate;
@@ -65,22 +56,22 @@ export class TripComponent {
 
   closeModal(){
     this.isVisible=false;
+    this.isSaving=false;
   }
 
-  addTrip(){
-    this.addFuelUsageForm.controls.distanceTraveled.markAsTouched();
-    this.addFuelUsageForm.controls.distanceTraveled.markAsDirty();
-
-    console.log(this.addFuelUsageForm.controls.distanceTraveled);
-
-    let _fuelUsage:FuelUsage= this.addFuelUsageForm.value;
-
-    _fuelUsage.id = this.fuelUsages.length+1;
-
-    if(this.addFuelUsageForm.valid){
-      this.fuelUsages = [...this.fuelUsages, _fuelUsage];
+  async addTrip(){
+    this.isSaving=true;
+    setTimeout(() => {
+      if(this.addFuelUsageForm.valid){
+      let _fuelUsage:FuelUsage= this.addFuelUsageForm.value;
+      this.tripService.addTrip(_fuelUsage);
       this.addFuelUsageForm.reset();
+      this.refreshData();
       this.closeModal();
     }
+    }, 2000);
+   
+
+    
   }
 }
