@@ -1,1 +1,62 @@
-<p>add-trip works!</p>
+<div>
+    <form nz-form [formGroup]="addFuelUsageForm" (ngSubmit)="addTrip()">
+
+      <nz-form-item>
+        <nz-form-label [nzRequired]="true">Trip Date</nz-form-label>
+        <nz-form-control nzErrorTip="Trip Date is required">
+          <nz-date-picker 
+          nzFormat="MM/dd/yyyy" 
+          formControlName="tripDate"
+          [class.input-error]="tripDate.touched && tripDate.invalid"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzRequired]="true">Distance</nz-form-label>
+        <nz-form-control [nzErrorTip]="distanceTraveledError">
+          <input nz-input 
+          placeholder="Distance Traveled" 
+          formControlName="distanceTraveled" 
+          type="number"
+          [class.input-error]="distanceTraveled.touched && distanceTraveled.invalid" />
+          <ng-template #distanceTraveledError let-control>
+              @if(control.errors?.['required']){
+                Distance Traveled is required
+              }
+              @if(control.errors?.['min']){
+                  Distance Traveled must be greater than 0
+              }
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzRequired]="true">Average Fuel Consumption Rate</nz-form-label>
+        <nz-form-control [nzErrorTip]="fuelConsumptionRateError">
+          <input nz-input 
+          placeholder="Fuel Consumption Rate" 
+          formControlName="fuelConsumptionRate" 
+          type="number"
+          [class.input-error]="fuelConsumptionRate.touched && fuelConsumptionRate.invalid">
+          <ng-template #fuelConsumptionRateError let-control>
+              @if(control.errors?.['required']){
+                Fuel Consumption Rate is required
+              }
+              @if(control.errors?.['min']){
+                Fuel Consumption Rate must be greater than 0
+              }
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item style="text-align: right;">
+        <nz-form-control>
+          <button nz-button 
+          nzType="primary" 
+          [disabled]="addFuelUsageForm.invalid"
+          [nzLoading]="isSaving"
+          >{{isSaving ? 'Saving' : 'Save'}}</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>

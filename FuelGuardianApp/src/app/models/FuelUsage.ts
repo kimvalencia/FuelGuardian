@@ -1,5 +1,5 @@
 export interface FuelUsage{
-    id:number,
+    id?:number,
     tripDate:Date,
     distanceTraveled:number,
     fuelConsumptionRate:number,

@@ -12,34 +12,12 @@ import { Observable, delay } from 'rxjs';
 export class TripComponent implements OnInit {
 
   public isVisible:boolean = false;
-  public isSaving:boolean = false;
   public fuelUsages:FuelUsage[]=[];
 
-  public addFuelUsageForm:any;
-
-  constructor(private tripService:TripService){
-    this.addFuelUsageForm = new FormGroup({
-      tripDate: new FormControl('',[Validators.required]),
-      distanceTraveled: new FormControl(null, [Validators.required, Validators.min(0.1)]),
-      fuelConsumptionRate: new FormControl('', [Validators.required, Validators.min(0.1)]),
-    })
-    
-  }
+  constructor(private tripService:TripService){}
 
   ngOnInit(): void {
     this.refreshData();
-  }
-
-  get tripDate():any {
-    return this.addFuelUsageForm.get('tripDate');
-  }
-
-  get distanceTraveled():any {
-    return this.addFuelUsageForm.get('distanceTraveled');
-  }
-
-  get fuelConsumptionRate():any{
-    return this.addFuelUsageForm.get('fuelConsumptionRate');
   }
 
   private refreshData(){
@@ -56,22 +34,12 @@ export class TripComponent implements OnInit {
 
   closeModal(){
     this.isVisible=false;
-    this.isSaving=false;
   }
 
-  async addTrip(){
-    this.isSaving=true;
-    setTimeout(() => {
-      if(this.addFuelUsageForm.valid){
-      let _fuelUsage:FuelUsage= this.addFuelUsageForm.value;
-      this.tripService.addTrip(_fuelUsage);
-      this.addFuelUsageForm.reset();
-      this.refreshData();
+  onSuccessAdd(result:boolean){
+    if(result){
       this.closeModal();
+      this.refreshData();
     }
-    }, 2000);
-   
-
-    
   }
 }
