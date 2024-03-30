@@ -1,4 +1,4 @@
-export interface FuelUsage{
+export interface ITrip{
     id?:number,
     tripDate:Date,
     distanceTraveled:number,

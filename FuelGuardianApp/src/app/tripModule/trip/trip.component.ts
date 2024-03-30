@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FuelUsage } from '../../models/FuelUsage';
+import { ITrip } from '../../models/ITrip';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TripService } from '../../services/trip.service';
 import { Observable, delay } from 'rxjs';
@@ -12,7 +12,8 @@ import { Observable, delay } from 'rxjs';
 export class TripComponent implements OnInit {
 
   public isVisible:boolean = false;
-  public fuelUsages:FuelUsage[]=[];
+  public fuelUsages:ITrip[]=[];
+  public selectedTrip:ITrip | undefined;
 
   constructor(private tripService:TripService){}
 
@@ -34,6 +35,7 @@ export class TripComponent implements OnInit {
 
   closeModal(){
     this.isVisible=false;
+    this.selectedTrip =undefined;
   }
 
   onSuccessAdd(result:boolean){
@@ -41,5 +43,11 @@ export class TripComponent implements OnInit {
       this.closeModal();
       this.refreshData();
     }
+  }
+
+  editTrip(trip:ITrip){
+    console.log(trip);
+    this.selectedTrip=trip;
+    this.showAddTripModal();
   }
 }

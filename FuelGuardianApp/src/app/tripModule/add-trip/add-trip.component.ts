@@ -1,7 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TripService } from '../../services/trip.service';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { FuelUsage } from '../../models/FuelUsage';
+import { ITrip } from '../../models/ITrip';
 
 @Component({
   selector: 'app-add-trip',
@@ -10,42 +10,65 @@ import { FuelUsage } from '../../models/FuelUsage';
 })
 export class AddTripComponent implements OnInit {
 
-  public addFuelUsageForm:any; 
+  public addTripForm:any; 
   public isSaving:boolean = false;
   @Output() onSuccess = new EventEmitter<boolean>();
+  @Input() selectedTrip:ITrip | undefined;
 
   constructor(private tripService:TripService){}
 
 
   ngOnInit(): void {
-    this.addFuelUsageForm= 
+    this.addTripForm= 
           new FormGroup({
-            tripDate: new FormControl('',[Validators.required]),
-            distanceTraveled: new FormControl(null, [Validators.required, Validators.min(0.1)]),
-            fuelConsumptionRate: new FormControl('', [Validators.required, Validators.min(0.1)]),
+            tripDate: new FormControl( 
+              this.selectedTrip?.tripDate ?? ''
+              ,[Validators.required]),
+            distanceTraveled: new FormControl(
+              this.selectedTrip?.distanceTraveled
+              , [Validators.required, Validators.min(0.1)]),
+            fuelConsumptionRate: new FormControl(
+              this.selectedTrip?.fuelConsumptionRate
+              , [Validators.required, Validators.min(0.1)]),
           })
   }
 
   get tripDate():any {
-    return this.addFuelUsageForm.get('tripDate');
+    return this.addTripForm.get('tripDate');
   }
 
   get distanceTraveled():any {
-    return this.addFuelUsageForm.get('distanceTraveled');
+    return this.addTripForm.get('distanceTraveled');
   }
 
   get fuelConsumptionRate():any{
-    return this.addFuelUsageForm.get('fuelConsumptionRate');
+    return this.addTripForm.get('fuelConsumptionRate');
+  }
+
+  handleSave(){
+    if(this.selectedTrip != undefined){
+      this.updateTrip();
+    }
+    else{
+      this.addTrip();
+    }
   }
 
   addTrip(){
     this.isSaving=true;
-    if(this.addFuelUsageForm.valid){
-      let _fuelUsage:FuelUsage= this.addFuelUsageForm.value;
-      this.tripService.addTrip(_fuelUsage);
-      this.addFuelUsageForm.reset();
+    if(this.addTripForm.valid){
+      let _trip:ITrip= this.addTripForm.value;
+      this.tripService.addTrip(_trip);
+      this.addTripForm.reset();
 
       this.onSuccess.emit(true);
     }
+  }
+
+  updateTrip(){
+      let _trip:ITrip= this.addTripForm.value;
+      _trip.id= this.selectedTrip?.id;
+      this.tripService.updateTrip(_trip);
+      this.onSuccess.emit(true);
   }
 }

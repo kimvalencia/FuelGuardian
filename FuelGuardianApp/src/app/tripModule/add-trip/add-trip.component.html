@@ -1,5 +1,5 @@
 <div>
-    <form nz-form [formGroup]="addFuelUsageForm" (ngSubmit)="addTrip()">
+    <form nz-form [formGroup]="addTripForm" (ngSubmit)="handleSave()">
 
       <nz-form-item>
         <nz-form-label [nzRequired]="true">Trip Date</nz-form-label>
@@ -53,7 +53,7 @@
         <nz-form-control>
           <button nz-button 
           nzType="primary" 
-          [disabled]="addFuelUsageForm.invalid"
+          [disabled]="addTripForm.invalid"
           [nzLoading]="isSaving"
           >{{isSaving ? 'Saving' : 'Save'}}</button>
         </nz-form-control>

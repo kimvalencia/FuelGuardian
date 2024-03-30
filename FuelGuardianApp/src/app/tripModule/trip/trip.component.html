@@ -12,7 +12,7 @@
 (nzOnCancel)="closeModal()"
 [nzFooter]="null" >
   <ng-container *nzModalContent>
-    <app-add-trip (onSuccess)="onSuccessAdd($event)"></app-add-trip>
+    <app-add-trip (onSuccess)="onSuccessAdd($event)" [selectedTrip]="selectedTrip" ></app-add-trip>
   </ng-container>
 </nz-modal>
 
@@ -27,13 +27,13 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of basicTable.data">
+      <tr *ngFor="let data of basicTable.data; index">
         <td>{{data.tripDate | date: 'MM/dd/yyyy'}}</td>
         <td>{{data.distanceTraveled}}</td>
         <td>{{data.fuelConsumptionRate}}</td>
         <td>{{computeFuelBurned(data.distanceTraveled, data.fuelConsumptionRate) | number: '1.2-4'}}</td>
         <td>
-          <a>Edit</a>
+          <a (click)="editTrip(data)">Edit</a>
           <nz-divider nzType="vertical"></nz-divider>
           <a>Delete</a>
           <nz-divider nzType="vertical"></nz-divider>

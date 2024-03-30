@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FuelUsage } from '../models/FuelUsage';
+import { ITrip } from '../models/ITrip';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -9,10 +9,10 @@ export class TripService {
 
   constructor() { }
 
-  private _trips:BehaviorSubject<FuelUsage[]>= new BehaviorSubject<FuelUsage[]>([]);
-  public trips$:Observable<FuelUsage[]> = this._trips.asObservable();
+//  private _trips:BehaviorSubject<ITrip[]>= new BehaviorSubject<ITrip[]>([]);
+//  public trips$:Observable<ITrip[]> = this._trips.asObservable();
 
-  public trips:Array<FuelUsage>=[
+  public trips:Array<ITrip>=[
     {
       id:1,
       tripDate: new Date("02/11/2024"),
@@ -33,8 +33,14 @@ export class TripService {
     }
   ];
 
-  public addTrip(fuelUsage:FuelUsage){
-    fuelUsage.id = this.trips.length+1;
-    this.trips = [...this.trips, fuelUsage];
+  public addTrip(trip:ITrip){
+    trip.id = this.trips.length+1;
+    this.trips = [...this.trips, trip];
   } 
+
+  public updateTrip(trip:ITrip){
+    let index = this.trips.findIndex((w)=>w.id == trip.id)
+
+    this.trips[index] = trip;
+  }
 }
