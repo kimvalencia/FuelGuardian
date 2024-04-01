@@ -1,16 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ITrip } from '../models/ITrip';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TripService {
-
-  constructor() { }
-
-//  private _trips:BehaviorSubject<ITrip[]>= new BehaviorSubject<ITrip[]>([]);
-//  public trips$:Observable<ITrip[]> = this._trips.asObservable();
 
   public trips:Array<ITrip>=[
     {

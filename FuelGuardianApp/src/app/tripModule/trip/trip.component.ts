@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ITrip } from '../../models/ITrip';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TripService } from '../../services/trip.service';
-import { Observable, delay } from 'rxjs';
 
 @Component({
   selector: 'app-trip',
