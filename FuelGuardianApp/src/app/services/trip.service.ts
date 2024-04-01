@@ -37,4 +37,9 @@ export class TripService {
 
     this.trips[index] = trip;
   }
+
+  public deleteTrip(id:number){
+    let index = this.trips.findIndex((w)=>w.id == id);
+    this.trips.splice(index,1);
+  }
 }
