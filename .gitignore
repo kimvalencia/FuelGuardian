@@ -41,3 +41,6 @@
 /FuelGuardianApp/.DS_Store
 /FuelGuardianApp/Thumbs.db
 FuelGuardianApp/.scannerwork/
+FuelGuardianAPI/.vs/
+FuelGuardianAPI/FuelGuardianAPI/obj/
+FuelGuardianAPI/FuelGuardianAPI/bin/
