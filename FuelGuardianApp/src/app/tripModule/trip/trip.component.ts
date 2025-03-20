@@ -4,9 +4,10 @@ import { TripService } from '../../services/trip.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
-  selector: 'app-trip',
-  templateUrl: './trip.component.html',
-  styleUrl: './trip.component.scss'
+    selector: 'app-trip',
+    templateUrl: './trip.component.html',
+    styleUrl: './trip.component.scss',
+    standalone: false
 })
 export class TripComponent implements OnInit {
 

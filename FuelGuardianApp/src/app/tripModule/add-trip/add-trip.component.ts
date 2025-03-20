@@ -4,9 +4,10 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { ITrip } from '../../models/ITrip';
 
 @Component({
-  selector: 'app-add-trip',
-  templateUrl: './add-trip.component.html',
-  styleUrl: './add-trip.component.scss'
+    selector: 'app-add-trip',
+    templateUrl: './add-trip.component.html',
+    styleUrl: './add-trip.component.scss',
+    standalone: false
 })
 export class AddTripComponent implements OnInit {
 
