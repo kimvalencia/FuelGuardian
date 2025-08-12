@@ -1,4 +1,4 @@
-namespace FuelGuardianAPI
+namespace FuelGuardianWebService
 {
     public class WeatherForecast
     {

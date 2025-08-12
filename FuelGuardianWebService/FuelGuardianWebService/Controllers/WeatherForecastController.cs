@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace FuelGuardianAPI.Controllers
+namespace FuelGuardianWebService.Controllers
 {
     [ApiController]
     [Route("[controller]")]
