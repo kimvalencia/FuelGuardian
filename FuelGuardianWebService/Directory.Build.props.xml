@@ -1,0 +1,6 @@
+﻿<Project>
+	<PropertyGroup>
+		<EfStartupProject>FuelGuardianWebService</EfStartupProject>
+		<EfMigrationsProject>FuelGuardianWebService.App</EfMigrationsProject>
+	</PropertyGroup>
+</Project>
