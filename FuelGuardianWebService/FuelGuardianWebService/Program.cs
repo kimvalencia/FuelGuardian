@@ -1,4 +1,5 @@
 using FuelGuardianWebService.App;
+using FuelGuardianWebService.Endpoints;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -27,5 +28,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapFuelUsageEndpoints();
 
 app.Run();
