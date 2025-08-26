@@ -30,5 +30,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapFuelUsageEndpoints();
+app.MapFuelSessionEndpoints();
 
 app.Run();

@@ -15,6 +15,7 @@ namespace FuelGuardianWebService.App.Entities
         public int VehicleId { get; set; }
         public DateTime DateFueled { get; set; }
         public decimal Rate { get; set; }
+        public decimal Quantity { get; set; }
         public decimal Amount { get; set; }
         public decimal Odometer { get; set; }
 
