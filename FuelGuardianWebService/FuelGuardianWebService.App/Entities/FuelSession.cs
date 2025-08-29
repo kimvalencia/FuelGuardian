@@ -11,7 +11,7 @@ namespace FuelGuardianWebService.App.Entities
     {
         [Key]
         public int Id { get; set; }
-        public required Vehicle Vehicle { get; set; }
+        public Vehicle? Vehicle { get; set; }
         public int VehicleId { get; set; }
         public DateTime DateFueled { get; set; }
         public decimal Rate { get; set; }

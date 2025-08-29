@@ -16,6 +16,7 @@ namespace FuelGuardianWebService.Endpoints
             group.MapGet("", GetAll);
             group.MapGet("{Id:int}", GetById);
             group.MapPost("", AddFuelSession);
+            group.MapDelete("{Id:int}", DeleteFuelSession);
         }
 
         static async Task<IResult> GetAll(FuelGuardianDBContext db)
@@ -39,6 +40,20 @@ namespace FuelGuardianWebService.Endpoints
             await db.SaveChangesAsync();
 
             return Results.Created($"api/FuelSessions/{fuelSession.Id}", fuelSession);
+        }
+
+        static async Task<IResult> DeleteFuelSession(FuelGuardianDBContext db, [FromRoute]int  id)
+        {
+            var fuelSession = await db.FuelSessions.FindAsync(id);
+
+            if (fuelSession != null) {
+                db.FuelSessions.Remove(fuelSession);
+                await db.SaveChangesAsync();
+
+                return Results.Ok();
+            }
+            
+            return Results.NotFound("Fuel Session not found");
         }
 
     }
