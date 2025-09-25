@@ -18,7 +18,12 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<FuelGuardianDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("FuelGuardianConn"), x=>x.MigrationsAssembly("FuelGuardianWebService.App")));
 
+//add cahing
+builder.Services.AddResponseCaching();
+
 var app = builder.Build();
+
+app.UseResponseCaching();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -26,6 +31,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
+
+
 
 app.UseHttpsRedirection();
 

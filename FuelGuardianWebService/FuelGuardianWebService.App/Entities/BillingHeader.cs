@@ -15,5 +15,7 @@ namespace FuelGuardianWebService.App.Entities
         public DateTime EndDate { get; set; }
         public decimal Total { get; set; }
         public required List<BillingDetail> Details { get; set; } =new List<BillingDetail>();
+        public bool IsPaid { get; set; }
+        public string Remarks { get; set; } = default!;
     }
 }

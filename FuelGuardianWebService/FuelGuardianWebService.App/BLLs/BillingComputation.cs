@@ -20,11 +20,12 @@ namespace FuelGuardianWebService.App.BLLs
         public BillingHeader Compute(BillingHeader header, List<FuelSession> FuelSessions, List<FuelUsage> FuelUsages)
         {
             var usages = FuelUsages;
+            DateTime lastComputedDate = header.StartDate;
 
             foreach (var session in FuelSessions.OrderBy(q=>q.DateFueled).ToList()) 
             {
                 //get fuel usages before datefueled
-                var _usages = usages.Where(q => q.TripEnd <= session.DateFueled).ToList();
+                var _usages = usages.Where(q => q.TripEnd>= lastComputedDate && q.TripEnd < session.DateFueled).ToList();
                 foreach (var usage in _usages) 
                 {
                     var detail = new BillingDetail();
@@ -35,11 +36,13 @@ namespace FuelGuardianWebService.App.BLLs
                     header.Details.Add(detail);
                 }
 
-                if (_usages.Any())
-                {
-                    //remove computed usages
-                    usages.RemoveAll(_usages.Contains);
-                }
+                lastComputedDate = session.DateFueled;
+
+                //if (_usages.Any())
+                //{
+                //    //remove computed usages
+                //    usages.RemoveAll(_usages.Contains);
+                //}
             }
 
             header.Total = header.Details.Sum(q => q.Amount);

@@ -20,6 +20,7 @@ namespace FuelGuardianWebService.Controllers
         }
 
         [HttpGet]
+        [ResponseCache(Duration = 60)]
         public async Task<IActionResult> GetAllBilling()
         {
             var billings = await dbContext.BillingHeaders.ToListAsync();
@@ -41,11 +42,11 @@ namespace FuelGuardianWebService.Controllers
             dbContext.Add(header);
             await dbContext.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(AddNewBilling), header);
+            return CreatedAtAction(nameof(GetBillingById),new {header.Id } , header);
         }
 
-        [HttpPost,Route("Compute/{Id}")]
-        public async Task<IActionResult> ComputeBilling([FromRoute] int Id)
+        [HttpPost,Route("Compute")]
+        public async Task<IActionResult> ComputeBilling([FromBody] int Id)
         {
             //get billing header
             var header = await dbContext.BillingHeaders.FirstOrDefaultAsync(q=>q.Id==Id);
@@ -58,19 +59,25 @@ namespace FuelGuardianWebService.Controllers
             //remove all details
             await dbContext.Database.ExecuteSqlAsync($"DELETE FROM BillingDetails WHERE BillingHeaderId={Id}");
 
-            //get fuel sessions
-            var sessions = await dbContext.FuelSessions
-                .Where(q => q.DateFueled >= header.StartDate && q.DateFueled <= header.EndDate)
-                .OrderBy(q=>q.DateFueled)
-                .ToListAsync();
-
             // get fuel usages
             var usages = await dbContext.FuelUsages
                 .Where(q => q.TripEnd >= header.StartDate && q.TripEnd <= header.EndDate)
                 .OrderBy(q=>q.TripEnd)
                 .ToListAsync();
 
-            header = new BillingComputation(dbContext).Compute(header, sessions, usages);
+            if (usages.Any())
+            {
+                var firstUsage = usages.FirstOrDefault();
+                var lastUsage = usages.LastOrDefault();
+
+                //get fuel sessions from the first usage's trip end to
+                var sessions = await dbContext.FuelSessions
+                    .Where(q => q.DateFueled >= firstUsage.TripEnd && q.DateFueled <= header.EndDate)
+                    .OrderBy(q => q.DateFueled)
+                    .ToListAsync();
+
+                header = new BillingComputation(dbContext).Compute(header, sessions, usages);
+            }
 
             dbContext.Update(header);
             await dbContext.SaveChangesAsync();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace FuelGuardianWebService.App.DTOs.FuelSessionAgg
@@ -12,10 +13,11 @@ namespace FuelGuardianWebService.App.DTOs.FuelSessionAgg
         public string DateFueled { get; set; }
         public decimal Rate { get; set; }
         public decimal Quantity { get; set; }
+        [JsonIgnore]
         public decimal Amount { get {
                 return Rate * Quantity;
             } 
         }
-        public decimal Odometer { get; set; }
+        public decimal Odometer { get; set; }=0m;
     }
 }
