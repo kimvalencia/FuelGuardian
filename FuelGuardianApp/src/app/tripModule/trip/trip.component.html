@@ -1,16 +1,16 @@
 <div style="text-align: right; padding: 10px 5px;">
-  <button nz-button nzType="primary" 
-  [nzSize]="'large'" 
-  nzShape="round" 
-  (click)="showAddTripModal()">
+  <button nz-button nzType="primary"
+    [nzSize]="'large'"
+    nzShape="round"
+    (click)="showAddTripModal()">
     <span nz-icon nzType="plus"></span>
     Add Fuel Usage
   </button>
 </div>
 
-<nz-modal [(nzVisible)]="isVisible" nzTitle="Add Fuel Usage" 
-(nzOnCancel)="closeModal()"
-[nzFooter]="null" >
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Add Fuel Usage"
+  (nzOnCancel)="closeModal()"
+  [nzFooter]="null" >
   <ng-container *nzModalContent>
     <app-add-trip (onSuccess)="onSuccessAdd($event)" [selectedTrip]="selectedTrip" ></app-add-trip>
   </ng-container>
@@ -27,18 +27,20 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of basicTable.data">
-      <td>{{data.tripDate | date: 'MM/dd/yyyy'}}</td>
-      <td>{{data.distanceTraveled}}</td>
-      <td>{{data.fuelConsumptionRate}}</td>
-      <td>{{computeFuelBurned(data.distanceTraveled, data.fuelConsumptionRate) | number: '1.2-4'}}</td>
-      <td>
-        <a (click)="editTrip(data)">Edit</a>
-        <nz-divider nzType="vertical"></nz-divider>
-        <a (click)="deleteTrip(data.id!)">Delete</a>
-        <nz-divider nzType="vertical"></nz-divider>
-        <a>Mark as Paid</a>
-      </td>
-    </tr>
+    @for (data of basicTable.data; track data) {
+      <tr>
+        <td>{{data.tripDate | date: 'MM/dd/yyyy'}}</td>
+        <td>{{data.distanceTraveled}}</td>
+        <td>{{data.fuelConsumptionRate}}</td>
+        <td>{{computeFuelBurned(data.distanceTraveled, data.fuelConsumptionRate) | number: '1.2-4'}}</td>
+        <td>
+          <a (click)="editTrip(data)">Edit</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a (click)="deleteTrip(data.id!)">Delete</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a>Mark as Paid</a>
+        </td>
+      </tr>
+    }
   </tbody>
 </nz-table>
