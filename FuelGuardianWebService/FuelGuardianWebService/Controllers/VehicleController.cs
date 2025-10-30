@@ -47,5 +47,18 @@ namespace FuelGuardianWebService.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = vehicle.Id }, vehicle);
         }
+
+        [HttpPut, Route("{id}")]
+        public IActionResult Put([FromRoute] int id, [FromBody] UpdateVehicleDTO updateVehicleDTO)
+        {
+
+            var _vehicle = updateVehicleDTO.Adapt<Vehicle>();
+            _vehicle.Id = id;
+
+            dbContext.Vehicles.Update(_vehicle);
+            dbContext.SaveChanges();
+
+            return Ok(_vehicle);
+        }
     }
 }
