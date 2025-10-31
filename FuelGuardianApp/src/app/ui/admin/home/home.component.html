@@ -1,0 +1,223 @@
+<!-- Admin Dashboard (NG-ZORRO template) -->
+<nz-layout class="layout-root">
+  <!-- SIDEBAR -->
+  <nz-sider nzCollapsible nzWidth="260" class="sider">
+    <div class="brand">
+      <img src="assets/logo.svg" alt="Logo" class="brand-logo" />
+      <div class="brand-title">Acme Admin</div>
+    </div>
+
+    <ul nz-menu nzTheme="dark" nzMode="inline" nzSelectable>
+      <li nz-menu-item nzSelected>
+        <i nz-icon nzType="dashboard"></i>
+        <span>Dashboard</span>
+      </li>
+      <ul nz-submenu>
+        <span title>
+          <i nz-icon nzType="team"></i>
+          <span>Users</span>
+        </span>
+        <li nz-menu-item>All Users</li>
+        <li nz-menu-item>Create User</li>
+      </ul>
+      <li nz-menu-item>
+        <i nz-icon nzType="shopping-cart"></i>
+        <span>Orders</span>
+      </li>
+      <li nz-menu-item>
+        <i nz-icon nzType="fund"></i>
+        <span>Revenue</span>
+      </li>
+      <li nz-menu-item>
+        <i nz-icon nzType="setting"></i>
+        <span>Settings</span>
+      </li>
+    </ul>
+
+    <div class="sider-footer">
+      <div>Version 1.2.0</div>
+      <button nz-button nzType="link" class="sider-help">Help & Docs</button>
+    </div>
+  </nz-sider>
+
+  <!-- MAIN AREA -->
+  <nz-layout>
+    <!-- HEADER -->
+    <nz-header class="header">
+      <div class="header-left">
+        <button nz-button nzType="text" class="hamburger" aria-label="Toggle sidebar">
+          <i nz-icon nzType="menu-fold"></i>
+        </button>
+        <div class="search">
+          <input nz-input placeholder="Search..." />
+          <button nz-button nzType="primary" class="search-btn">Search</button>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <button nz-button nzType="text" nz-tooltip nzTooltipTitle="Notifications">
+          <nz-badge [nzCount]="5">
+            <i nz-icon nzType="bell"></i>
+          </nz-badge>
+        </button>
+
+        <button nz-button nzType="text" nz-tooltip nzTooltipTitle="Messages">
+          <nz-badge nzDot>
+            <i nz-icon nzType="mail"></i>
+          </nz-badge>
+        </button>
+
+        <nz-dropdown-menu nzPlacement="bottomRight">
+          <a nz-dropdown>
+            <nz-avatar nzIcon="user" nzSize="small"></nz-avatar>
+            <span class="username">Admin</span>
+            <i nz-icon nzType="down"></i>
+          </a>
+          <ul nz-menu>
+            <li nz-menu-item>Profile</li>
+            <li nz-menu-item>Account</li>
+            <li nz-menu-divider></li>
+            <li nz-menu-item>Sign out</li>
+          </ul>
+        </nz-dropdown-menu>
+      </div>
+    </nz-header>
+
+    <!-- CONTENT -->
+    <nz-content class="content">
+      <div class="page-header">
+        <h2>Dashboard</h2>
+        <p class="muted">Overview of system metrics and recent activity</p>
+      </div>
+
+      <!-- STATISTICS ROW -->
+      <div class="stats-row">
+        <nz-card class="stat-card">
+          <nz-statistic nzTitle="Active Users" nzValue="1,234"></nz-statistic>
+        </nz-card>
+
+        <nz-card class="stat-card">
+          <nz-statistic nzTitle="New Orders" nzValue="312"></nz-statistic>
+        </nz-card>
+
+        <nz-card class="stat-card">
+          <nz-statistic nzTitle="Revenue" nzValue="$24,580"></nz-statistic>
+        </nz-card>
+
+        <nz-card class="stat-card">
+          <nz-statistic nzTitle="Server Uptime" nzValue="99.99%"></nz-statistic>
+        </nz-card>
+      </div>
+
+      <div class="main-grid">
+        <!-- LEFT COLUMN: Charts + Table -->
+        <div class="col-left">
+          <nz-card nzTitle="Sales Trend" style="margin-bottom:16px;">
+            <!-- placeholder for a chart canvas -->
+            <div class="chart-placeholder">[ Chart Canvas Here ]</div>
+          </nz-card>
+
+          <nz-card nzTitle="Recent Orders">
+            <nz-table [nzData]="[]" nzFrontPagination>
+              <thead>
+                <tr>
+                  <th>Order #</th>
+                  <th>Customer</th>
+                  <th>Status</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Example rows (replace with real data via *ngFor) -->
+                <tr>
+                  <td>#1024</td>
+                  <td>Jane Doe</td>
+                  <td><nz-tag nzColor="green">Delivered</nz-tag></td>
+                  <td>$124.00</td>
+                </tr>
+                <tr>
+                  <td>#1023</td>
+                  <td>John Smith</td>
+                  <td><nz-tag nzColor="orange">Processing</nz-tag></td>
+                  <td>$78.50</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </nz-card>
+        </div>
+
+        <!-- RIGHT COLUMN: Activity / Quick Actions -->
+        <div class="col-right">
+          <nz-card nzTitle="Quick Actions" style="margin-bottom:16px;">
+            <div class="actions">
+              <button nz-button nzType="primary" class="full">Create Order</button>
+              <button nz-button nzType="default" class="full">Add User</button>
+              <button nz-button nzType="dashed" class="full">Export Data</button>
+            </div>
+          </nz-card>
+
+          <nz-card nzTitle="Recent Activity">
+            <nz-list [nzDataSource]="[]">
+              <!-- sample item -->
+              <nz-list-item>
+                <nz-list-item-meta
+                  nzAvatar
+                  nzTitle="System"
+                  nzDescription="Backup completed — 2 minutes ago">
+                </nz-list-item-meta>
+              </nz-list-item>
+              <nz-list-item>
+                <nz-list-item-meta
+                  nzAvatar
+                  nzTitle="Payments"
+                  nzDescription="Refund processed — 10 minutes ago">
+                </nz-list-item-meta>
+              </nz-list-item>
+            </nz-list>
+          </nz-card>
+
+          <nz-card nzTitle="Support">
+            <p class="muted">Contact support or view docs</p>
+            <button nz-button nzType="link">Open Support</button>
+          </nz-card>
+        </div>
+      </div>
+    </nz-content>
+
+    <!-- FOOTER -->
+    <nz-footer class="footer">© 2025 Acme Corp — All rights reserved</nz-footer>
+  </nz-layout>
+</nz-layout>
+
+<!-- Minimal styles to keep layout clean -->
+<style>
+  .layout-root { min-height: 100vh; background: #f0f2f5; }
+  .sider { display:flex; flex-direction:column; }
+  .brand { display:flex; align-items:center; padding:16px; gap:12px; }
+  .brand-logo { width:36px; height:36px; }
+  .brand-title { color:#fff; font-weight:700; font-size:16px; }
+  .sider-footer { margin-top:auto; padding:16px; color:#bfbfbf; font-size:12px; display:flex; justify-content:space-between; align-items:center;}
+  .sider-help { color:#fff; padding:0; }
+  .header { display:flex; justify-content:space-between; align-items:center; padding:0 24px; background:#fff; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .header-left { display:flex; align-items:center; gap:16px; }
+  .hamburger { display:flex; align-items:center; }
+  .search { display:flex; gap:8px; align-items:center; }
+  .search input { width:360px; max-width:40vw; }
+  .header-right { display:flex; gap:12px; align-items:center; }
+  .username { margin: 0 8px; }
+  .content { padding:24px; }
+  .page-header h2 { margin:0; font-size:20px; }
+  .muted { color:#8c8c8c; margin:4px 0 16px; }
+  .stats-row { display:flex; gap:16px; margin:16px 0 24px; flex-wrap:wrap; }
+  .stat-card { flex:1 1 200px; min-width:180px; }
+  .main-grid { display:flex; gap:16px; }
+  .col-left { flex:2; display:flex; flex-direction:column; gap:16px; }
+  .col-right { flex:1; display:flex; flex-direction:column; gap:16px; min-width:260px; }
+  .chart-placeholder { height:200px; display:flex; align-items:center; justify-content:center; border-radius:6px; background:linear-gradient(135deg,#f7f9fb,#ffffff); color:#9aa4b2; border:1px dashed #e6eef6; }
+  .actions .full { width:100%; margin-bottom:8px; }
+  .footer { text-align:center; padding:12px 24px; background:#fff; margin-top:16px; }
+  @media (max-width: 900px) {
+    .main-grid { flex-direction:column; }
+    .search input { width:180px; }
+  }
+</style>

@@ -20,13 +20,23 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { HomeComponent } from './ui/admin/home/home.component';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 
 registerLocaleData(en);
 
 @NgModule({ declarations: [
         AppComponent,
         TripComponent,
-        AddTripComponent
+        AddTripComponent,
+        HomeComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
@@ -41,6 +51,15 @@ registerLocaleData(en);
         ReactiveFormsModule,
         NzFormModule,
         NzDatePickerModule,
+        NzMenuModule,
+        NzCardModule,
+        NzStatisticModule,
+        NzListModule,
+        NzAvatarModule,
+        NzButtonModule,
+        NzBadgeModule,
+        NzDropDownModule,
+        NzTagModule,
         NzInputModule], providers: [
         { provide: NZ_I18N, useValue: en_US },
         provideHttpClient(withInterceptorsFromDi())
