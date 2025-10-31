@@ -35,7 +35,7 @@ namespace FuelGuardianWebService.Endpoints
             http.Response.GetTypedHeaders().CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
             {
                 Public = true,
-                MaxAge = TimeSpan.FromSeconds(60)
+                MaxAge = TimeSpan.FromSeconds(10)
             };
 
             return Results.Ok(fuelUsages);
