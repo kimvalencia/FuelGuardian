@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ITrip } from '../../models/ITrip';
 import { TripService } from '../../services/trip.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { FuelUsagesApiService } from '../../services/api/FuelUsages/fuel-usages-api-service';
 
 @Component({
     selector: 'app-trip',
@@ -10,6 +11,8 @@ import { NzModalService } from 'ng-zorro-antd/modal';
     standalone: false
 })
 export class TripComponent implements OnInit {
+
+  private http = inject(FuelUsagesApiService);
 
   public isVisible:boolean = false;
   public fuelUsages:ITrip[]=[];
@@ -22,7 +25,14 @@ export class TripComponent implements OnInit {
   }
 
   private refreshData(){
-    this.fuelUsages= [...this.tripService.trips];
+    //this.fuelUsages= [...this.tripService.trips];
+
+    this.http.getAll()
+    .subscribe({
+      next : (data) => {this.fuelUsages = data;},
+      error: (error) => {console.error('Error fetching fuelusages', error);}
+    });
+
   }
 
   computeFuelBurned(distance:number, consumptionRate:number):number {

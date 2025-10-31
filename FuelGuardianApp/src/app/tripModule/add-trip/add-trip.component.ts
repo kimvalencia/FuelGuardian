@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { TripService } from '../../services/trip.service';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { ITrip } from '../../models/ITrip';
+import { FuelUsagesApiService } from '../../services/api/FuelUsages/fuel-usages-api-service';
 
 @Component({
     selector: 'app-add-trip',
@@ -10,6 +11,8 @@ import { ITrip } from '../../models/ITrip';
     standalone: false
 })
 export class AddTripComponent implements OnInit {
+
+  private http = inject(FuelUsagesApiService);
 
   public addTripForm:any; 
   public isSaving:boolean = false;
@@ -58,8 +61,23 @@ export class AddTripComponent implements OnInit {
   addTrip(){
     this.isSaving=true;
     if(this.addTripForm.valid){
-      let _trip:ITrip= this.addTripForm.value;
-      this.tripService.addTrip(_trip);
+      let _trip:ITrip= this.addTripForm.value;  
+
+      _trip.vehicleId=4;
+
+      console.log(_trip);
+
+      this.http.create(_trip).subscribe({
+        next: (data) => {
+          this.isSaving=false;
+        },
+        error: (error) => {
+          console.error('Error creating trip', error);
+          this.isSaving=false;
+        },
+    });
+
+      //this.tripService.addTrip(_trip);
       this.addTripForm.reset();
 
       this.onSuccess.emit(true);

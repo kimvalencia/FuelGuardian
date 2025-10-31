@@ -3,4 +3,5 @@ export interface ITrip{
     tripDate:Date,
     distanceTraveled:number,
     fuelConsumptionRate:number,
+    vehicleId?:number
 }
