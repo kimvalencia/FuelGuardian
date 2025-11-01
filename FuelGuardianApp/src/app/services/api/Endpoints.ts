@@ -3,5 +3,6 @@ export const API_ENDPOINTS = {
         GET_ALL: 'api/FuelUsages',
         CREATE: 'api/FuelUsages',
         UPDATE: (id: number) => `api/FuelUsages/${id}`,
+        DELETE: (id: number) => `api/FuelUsages/${id}`
     }
 }

@@ -19,4 +19,8 @@ export class FuelUsagesApiService {
     public create(trip: ITrip): Observable<ITrip> {
         return this.http.post<ITrip>(API_ENDPOINTS.FuelUsages.CREATE, trip);
     }
+
+    public delete(id: number): Observable<void> {
+        return this.http.delete<void>(API_ENDPOINTS.FuelUsages.DELETE(id));
+    }
 }

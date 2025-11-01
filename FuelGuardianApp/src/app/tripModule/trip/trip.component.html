@@ -1,4 +1,11 @@
 <div style="text-align: right; padding: 10px 5px;">
+  <button nz-button nzType="default"
+    [nzSize]="'large'"
+    nzShape="round"
+    (click)="refreshData()">
+    <span nz-icon nzType="reload"></span>
+    Refresh
+  </button>
   <button nz-button nzType="primary"
     [nzSize]="'large'"
     nzShape="round"
@@ -27,7 +34,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (data of basicTable.data; track data) {
+    @for (data of basicTable.data; track trackById($index, data)) {
       <tr>
         <td>{{data.tripDate | date: 'MM/dd/yyyy'}}</td>
         <td>{{data.distanceTraveled}}</td>

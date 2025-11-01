@@ -22,6 +22,7 @@ namespace FuelGuardianWebService.Endpoints
             group.MapGet("/{Id:int}", GetFuelUsageById);
             group.MapPost("", AddFuelUsage);
             group.MapPut("/{id:int}", UpdateFuelUsage);
+            group.MapDelete("/{id:int}", DeleteFuelUsage);
         }
 
         static async Task<IResult> GetAllFuelUsages(FuelGuardianDBContext dbContext, HttpContext http)
@@ -32,11 +33,11 @@ namespace FuelGuardianWebService.Endpoints
                 .Select(t=>t.ToDTO())
                 .ToListAsync();
 
-            http.Response.GetTypedHeaders().CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
-            {
-                Public = true,
-                MaxAge = TimeSpan.FromSeconds(10)
-            };
+            //http.Response.GetTypedHeaders().CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+            //{
+            //    Public = true,
+            //    MaxAge = TimeSpan.FromSeconds(10)
+            //};
 
             return Results.Ok(fuelUsages);
         }
@@ -81,6 +82,16 @@ namespace FuelGuardianWebService.Endpoints
             return Results.NotFound("Fuel Usage not found");
         }
 
-
+        static async Task<IResult> DeleteFuelUsage(FuelGuardianDBContext db,[FromRoute] int id)
+        {
+            var fuelUsage = await db.FuelUsages.FindAsync(id);
+            if (fuelUsage != null)
+            {
+                db.FuelUsages.Remove(fuelUsage);
+                await db.SaveChangesAsync();
+                return Results.Ok(fuelUsage);
+            }
+            return Results.NotFound("Fuel Usage not found");
+        }
     }
 }
