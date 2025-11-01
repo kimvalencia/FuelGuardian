@@ -9,6 +9,10 @@ namespace FuelGuardianWebService.App.Entities
 {
     public class BillingHeader
     {
+        public BillingHeader()
+        {
+            Remarks= string.Empty;
+        }
         [Key]
         public int Id { get; set; }
         public DateTime StartDate { get; set; }

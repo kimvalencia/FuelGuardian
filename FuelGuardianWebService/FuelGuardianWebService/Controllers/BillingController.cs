@@ -59,9 +59,27 @@ namespace FuelGuardianWebService.Controllers
             //remove all details
             await dbContext.Database.ExecuteSqlAsync($"DELETE FROM BillingDetails WHERE BillingHeaderId={Id}");
 
+            DateTime StartingDate = header.StartDate;
+
+            //get previous billing and get the last session included
+            var lastBilling = await dbContext.BillingHeaders.Where(q => q.EndDate < header.StartDate).OrderByDescending(q=>q.EndDate).FirstOrDefaultAsync();
+
+            if (lastBilling is not null)
+            {
+                //get the last fuel usage date
+                var lastFuelUsage = await dbContext.BillingDetails.Include(q => q.FuelUsage).Where(q => q.BillingHeaderId == lastBilling.Id).OrderByDescending(q=>q.FuelUsage.TripStart).FirstOrDefaultAsync();
+
+                if(lastFuelUsage is not null)
+                {
+                    StartingDate = lastFuelUsage.FuelUsage.TripStart.AddDays(1);
+                }
+            }
+
+
+
             // get fuel usages
             var usages = await dbContext.FuelUsages
-                .Where(q => q.TripEnd >= header.StartDate && q.TripEnd <= header.EndDate)
+                .Where(q => q.TripEnd >= StartingDate && q.TripEnd <= header.EndDate)
                 .OrderBy(q=>q.TripEnd)
                 .ToListAsync();
 

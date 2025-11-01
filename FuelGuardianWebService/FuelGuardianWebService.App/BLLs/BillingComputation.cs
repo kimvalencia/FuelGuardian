@@ -20,7 +20,7 @@ namespace FuelGuardianWebService.App.BLLs
         public BillingHeader Compute(BillingHeader header, List<FuelSession> FuelSessions, List<FuelUsage> FuelUsages)
         {
             var usages = FuelUsages;
-            DateTime lastComputedDate = header.StartDate;
+            DateTime lastComputedDate = usages is not null ? usages.OrderBy(q=>q.TripStart).FirstOrDefault().TripStart : header.StartDate;
 
             foreach (var session in FuelSessions.OrderBy(q=>q.DateFueled).ToList()) 
             {
