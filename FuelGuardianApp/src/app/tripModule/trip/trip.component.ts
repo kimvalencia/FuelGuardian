@@ -1,14 +1,23 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { ITrip } from '../../models/ITrip';
 import { TripService } from '../../services/trip.service';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalService, NzModalComponent, NzModalContentDirective } from 'ng-zorro-antd/modal';
 import { FuelUsagesApiService } from '../../services/api/FuelUsages/fuel-usages-api-service';
+import { NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
+import { NzButtonComponent } from 'ng-zorro-antd/button';
+import { NzWaveDirective } from 'ng-zorro-antd/core/wave';
+import { ɵNzTransitionPatchDirective } from 'ng-zorro-antd/core/transition-patch';
+import { NzIconDirective } from 'ng-zorro-antd/icon';
+import { AddTripComponent } from '../add-trip/add-trip.component';
+import { NzTableComponent, NzTheadComponent, NzTrDirective, NzTableCellDirective, NzThMeasureDirective, NzTbodyComponent } from 'ng-zorro-antd/table';
+import { NzDividerComponent } from 'ng-zorro-antd/divider';
+import { DecimalPipe, DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-trip',
     templateUrl: './trip.component.html',
     styleUrl: './trip.component.scss',
-    standalone: false
+    imports: [NzSpaceCompactItemDirective, NzButtonComponent, NzWaveDirective, ɵNzTransitionPatchDirective, NzIconDirective, NzModalComponent, NzModalContentDirective, AddTripComponent, NzTableComponent, NzTheadComponent, NzTrDirective, NzTableCellDirective, NzThMeasureDirective, NzTbodyComponent, NzDividerComponent, DecimalPipe, DatePipe]
 })
 export class TripComponent implements OnInit {
 

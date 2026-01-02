@@ -8,8 +8,8 @@ describe('AddTripComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AddTripComponent]
-    })
+    imports: [AddTripComponent]
+})
     .compileComponents();
     
     fixture = TestBed.createComponent(AddTripComponent);

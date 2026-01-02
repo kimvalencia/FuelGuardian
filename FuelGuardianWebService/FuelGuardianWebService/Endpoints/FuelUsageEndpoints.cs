@@ -30,6 +30,7 @@ namespace FuelGuardianWebService.Endpoints
             var fuelUsages= await dbContext
                 .FuelUsages
                 .Include(q=>q.Vehicle)
+                .OrderByDescending(q => q.TripStart)
                 .Select(t=>t.ToDTO())
                 .ToListAsync();
 

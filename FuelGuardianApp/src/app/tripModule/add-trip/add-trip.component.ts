@@ -1,14 +1,22 @@
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { TripService } from '../../services/trip.service';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ITrip } from '../../models/ITrip';
 import { FuelUsagesApiService } from '../../services/api/FuelUsages/fuel-usages-api-service';
+import { NzFormDirective, NzFormItemComponent, NzFormLabelComponent, NzFormControlComponent } from 'ng-zorro-antd/form';
+import { NzRowDirective, NzColDirective } from 'ng-zorro-antd/grid';
+import { NzSpaceCompactItemDirective } from 'ng-zorro-antd/space';
+import { NzDatePickerComponent } from 'ng-zorro-antd/date-picker';
+import { NzInputDirective } from 'ng-zorro-antd/input';
+import { NzButtonComponent } from 'ng-zorro-antd/button';
+import { NzWaveDirective } from 'ng-zorro-antd/core/wave';
+import { ɵNzTransitionPatchDirective } from 'ng-zorro-antd/core/transition-patch';
 
 @Component({
     selector: 'app-add-trip',
     templateUrl: './add-trip.component.html',
     styleUrl: './add-trip.component.scss',
-    standalone: false
+    imports: [FormsModule, NzFormDirective, ReactiveFormsModule, NzRowDirective, NzFormItemComponent, NzColDirective, NzFormLabelComponent, NzFormControlComponent, NzSpaceCompactItemDirective, NzDatePickerComponent, NzInputDirective, NzButtonComponent, NzWaveDirective, ɵNzTransitionPatchDirective]
 })
 export class AddTripComponent implements OnInit {
 

@@ -29,16 +29,15 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzDemoMenuInlineCollapsedComponent } from './test';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+import { provideRouter, RouterOutlet } from '@angular/router';
+import { routes } from './app.routes';
 
 registerLocaleData(en);
 
-@NgModule({ declarations: [
-        AppComponent,
-        TripComponent,
-        AddTripComponent,
-        HomeComponent
-    ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+@NgModule({ declarations: [AppComponent], bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
         FormsModule,
         BrowserAnimationsModule,
@@ -56,12 +55,19 @@ registerLocaleData(en);
         NzStatisticModule,
         NzListModule,
         NzAvatarModule,
-        NzButtonModule,
         NzBadgeModule,
         NzDropDownModule,
         NzTagModule,
-        NzInputModule], providers: [
+        NzInputModule, TripComponent,
+        AddTripComponent,
+        NzDemoMenuInlineCollapsedComponent,
+        NzTooltipModule,
+        NzBreadCrumbModule,
+        RouterOutlet,
+        HomeComponent], 
+        providers: [
         { provide: NZ_I18N, useValue: en_US },
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withInterceptorsFromDi()),
+        provideRouter(routes)
     ] })
 export class AppModule { }

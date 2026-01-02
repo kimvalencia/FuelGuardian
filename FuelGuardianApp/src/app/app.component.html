@@ -1,15 +1,93 @@
 <!-- NG-ZORRO -->
 
 <!-- <app-home></app-home> -->
+<!-- <nz-demo-menu-inline-collapsed></nz-demo-menu-inline-collapsed> -->
+<!-- 
+<nz-layout>
+      <nz-header [ngClass]="'header'">
+        <div>Fuel Guardian</div>
+      </nz-header>
+      <nz-layout>
+        <nz-sider>
+          <div class="wrapper">
+      <button nz-button nzType="primary" (click)="toggleCollapsed()">
+        <nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" />
+      </button>
+      <ul nz-menu nzMode="inline" nzTheme="dark" [nzInlineCollapsed]="isCollapsed">
+        <li
+          nz-menu-item
+          nz-tooltip
+          nzTooltipPlacement="right"
+          nzSelected
+        >
+          <nz-icon nzType="mail" />
+          <span>Navigation One</span>
+        </li>
+        <li nz-submenu nzTitle="Navigation Two" nzIcon="appstore">
+          <ul>
+            <li nz-menu-item>Option 5</li>
+            <li nz-menu-item>Option 6</li>
+            <li nz-submenu nzTitle="Submenu">
+              <ul>
+                <li nz-menu-item>Option 7</li>
+                <li nz-menu-item>Option 8</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Navigation Three" nzIcon="setting">
+          <ul>
+            <li nz-menu-item>Option 9</li>
+            <li nz-menu-item>Option 10</li>
+            <li nz-menu-item>Option 11</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+        </nz-sider>
+        <nz-content>
+        </nz-content>
+    </nz-layout>
+    <nz-footer>All Rights Reserved | Fuel Guardian</nz-footer>
+</nz-layout> -->
 
 <nz-layout>
-  <nz-header [ngClass]="'header'">
-    <div>Fuel Guardian</div>
-    <div class="menu">
-      <a href="#">Trips</a>|
-      <a href="#">Fuel Sessions</a>
-    </div>
-  </nz-header>
-  <nz-content><app-trip></app-trip></nz-content>
-  <nz-footer>All Rights Reserved | Fuel Guardian</nz-footer>
-</nz-layout>
+      <nz-sider nzCollapsible nzWidth="200px" [ngStyle]="{ height: '100vh' }">
+        <div class="logo"></div>
+        <ul nz-menu nzTheme="dark" nzMode="inline">
+          <li nz-menu-item nzSelected routerLink="/">
+            <nz-icon nzType="home" />
+            <span>Dashboard</span>
+          </li> 
+          <li nz-menu-item routerLink="/trips">
+            <nz-icon nzType="car" />
+            <span>Trips</span>
+          </li> 
+          <li nz-menu-item routerLink="/fuel-sessions">
+            <nz-icon nzType="pay-circle" />
+            <span>Fuel Sessions</span>
+          </li>
+          <li nz-menu-item routerLink="/billing">
+            <nz-icon nzType="money-collect" />
+            <span>Billing</span>
+          </li>
+          <li nz-submenu nzTitle="Reports" nzIcon="file">
+            <ul>
+              <li nz-menu-item>Tom</li>
+              <li nz-menu-item>Bill</li>
+              <li nz-menu-item>Alex</li>
+            </ul>
+          </li>
+        </ul>
+      </nz-sider>
+      <nz-layout>
+        <nz-header [ngClass]="'header'">
+          <div>Fuel Guardian</div>
+        </nz-header>
+        <nz-content>
+          <router-outlet></router-outlet>
+        </nz-content>
+        <nz-footer>Ant Design ©{{ date.getFullYear() }} Implement By Angular</nz-footer>
+      </nz-layout>
+    </nz-layout>
