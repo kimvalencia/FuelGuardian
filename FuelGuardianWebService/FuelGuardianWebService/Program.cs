@@ -58,5 +58,6 @@ app.MapControllers();
 
 app.MapFuelUsageEndpoints();
 app.MapFuelSessionEndpoints();
+app.MapTestEndpoints();
 
 app.Run();
