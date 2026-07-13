@@ -61,24 +61,32 @@ namespace FuelGuardianWebService.Controllers
 
             DateTime StartingDate = header.StartDate;
 
-            //get previous billing and get the last session included
-            var lastBilling = await dbContext.BillingHeaders.Where(q => q.EndDate < header.StartDate).OrderByDescending(q=>q.EndDate).FirstOrDefaultAsync();
+            var lastRecordedFuelUsage = await dbContext.BillingDetails.Include(q=>q.FuelUsage).Where(q=>q.BillingHeader.EndDate <header.StartDate)
+                .OrderByDescending(q => q.FuelUsage.TripEnd).FirstOrDefaultAsync();
 
-            if (lastBilling is not null)
+            if(lastRecordedFuelUsage != null)
             {
-                //get the last fuel usage date
-                var lastFuelUsage = await dbContext.BillingDetails.Include(q => q.FuelUsage).Where(q => q.BillingHeaderId == lastBilling.Id).OrderByDescending(q=>q.FuelUsage.TripStart).FirstOrDefaultAsync();
-
-                if(lastFuelUsage is not null)
-                {
-                    StartingDate = lastFuelUsage.FuelUsage.TripStart.AddDays(1);
-                }
+                StartingDate = lastRecordedFuelUsage.FuelUsage.TripEnd.AddDays(1);
             }
 
+        ////get previous billing and get the last session included
+        //var lastBilling = await dbContext.BillingHeaders.Where(q => q.EndDate < header.StartDate).OrderByDescending(q=>q.EndDate).FirstOrDefaultAsync();
+
+        //if (lastBilling is not null)
+        //{
+        //    //get the last fuel usage date
+        //    var lastFuelUsage = await dbContext.BillingDetails.Include(q => q.FuelUsage).Where(q => q.BillingHeaderId == lastBilling.Id).OrderByDescending(q=>q.FuelUsage.TripStart).FirstOrDefaultAsync();
+
+        //    if(lastFuelUsage is not null)
+        //    {
+        //        StartingDate = lastFuelUsage.FuelUsage.TripStart.AddDays(1);
+        //    }
+        //}
 
 
-            // get fuel usages
-            var usages = await dbContext.FuelUsages
+
+        // get fuel usages
+        var usages = await dbContext.FuelUsages
                 .Where(q => q.TripEnd >= StartingDate && q.TripEnd <= header.EndDate)
                 .OrderBy(q=>q.TripEnd)
                 .ToListAsync();
