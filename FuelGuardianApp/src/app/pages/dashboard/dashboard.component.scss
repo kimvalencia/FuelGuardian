@@ -1,0 +1,22 @@
+.dashboard-shell {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.chart-card {
+  min-height: 260px;
+}
+
+.chart-container {
+  position: relative;
+  height: 220px;
+  padding: 12px;
+}
+
+.empty-state,
+.loading-state {
+  color: #8c8c8c;
+  padding: 24px 0;
+  text-align: center;
+}

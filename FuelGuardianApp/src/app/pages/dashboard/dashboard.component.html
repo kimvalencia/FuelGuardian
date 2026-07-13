@@ -1,1 +1,39 @@
-<p>dashboard works!</p>
+<div class="dashboard-shell">
+  @if (!isLoading) {
+    <nz-card nzTitle="Fuel rate trend" class="chart-card">
+      @if (rateTrendChartData.labels?.length) {
+        <div class="chart-container">
+          <canvas
+            baseChart
+            type="line"
+            [data]="rateTrendChartData"
+            [options]="rateTrendChartOptions"
+          ></canvas>
+        </div>
+      } @else {
+        <div class="empty-state">
+          No fuel session rate data is available yet.
+        </div>
+      }
+    </nz-card>
+
+    <nz-card nzTitle="Monthly billing cost" class="chart-card">
+      @if (billingChartData.labels?.length) {
+        <div class="chart-container">
+          <canvas
+            baseChart
+            type="line"
+            [data]="billingChartData"
+            [options]="billingChartOptions"
+          ></canvas>
+        </div>
+      } @else {
+        <div class="empty-state">No billing data is available yet.</div>
+      }
+    </nz-card>
+  } @else {
+    <nz-card nzTitle="Dashboard" class="chart-card">
+      <div class="loading-state">Loading dashboard data…</div>
+    </nz-card>
+  }
+</div>
