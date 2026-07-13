@@ -21,7 +21,7 @@ namespace FuelGuardianWebService.Endpoints
 
         static async Task<IResult> GetAll(FuelGuardianDBContext db)
         {
-            var sessions = await db.FuelSessions.ToListAsync();
+            var sessions = await db.FuelSessions.OrderByDescending(q=>q.DateFueled).ToListAsync();
 
             return Results.Ok(sessions);
         }

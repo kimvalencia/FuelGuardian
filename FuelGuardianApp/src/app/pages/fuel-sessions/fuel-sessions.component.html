@@ -1,1 +1,157 @@
-<p>fuel-sessions works!</p>
+<nz-card nzTitle="Fuel Sessions" [nzExtra]="actionsTemplate">
+  <ng-template #actionsTemplate>
+    <div style="display: flex; gap: 8px; align-items: center">
+      <button nz-button nzType="default" (click)="refreshSessions()">
+        <span nz-icon nzType="reload"></span>
+        Refresh
+      </button>
+      <button nz-button nzType="primary" (click)="openAddModal()">
+        <span nz-icon nzType="plus"></span>
+        Add Fuel Session
+      </button>
+    </div>
+  </ng-template>
+
+  <nz-table #sessionTable [nzData]="sessions" nzBordered [nzSize]="'middle'">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Vehicle</th>
+        <th scope="col">Rate</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Odometer</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (session of sessionTable.data; track trackById($index, session)) {
+        <tr>
+          <td>{{ session.dateFueled | date: "mediumDate" }}</td>
+          <td>{{ getVehicleLabel(session.vehicleId) }}</td>
+          <td>{{ session.rate | number: "1.2-2" }}</td>
+          <td>{{ session.quantity | number: "1.2-2" }}</td>
+          <td>
+            {{
+              session.amount ?? session.rate * session.quantity
+                | number: "1.2-2"
+            }}
+          </td>
+          <td>{{ session.odometer | number: "1.2-2" }}</td>
+          <td>
+            <a (click)="deleteSession(session.id)">Delete</a>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </nz-table>
+</nz-card>
+
+<nz-modal
+  [(nzVisible)]="isModalVisible"
+  nzTitle="Add Fuel Session"
+  (nzOnCancel)="closeModal()"
+  [nzOkLoading]="isSubmitting"
+  [nzFooter]="null"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="sessionForm" (ngSubmit)="submitSession()">
+      <nz-form-item>
+        <nz-form-label
+          [nzSpan]="24"
+          nzFor="vehicleId"
+          nzRequired
+          id="vehicleLabel"
+          >Vehicle</nz-form-label
+        >
+        <nz-form-control>
+          <select
+            id="vehicleId"
+            formControlName="vehicleId"
+            class="ant-input"
+            aria-labelledby="vehicleLabel"
+          >
+            @for (vehicle of vehicles; track vehicle.id) {
+              <option [value]="vehicle.id">
+                {{ vehicle.plateNumber }} - {{ vehicle.vehicleType }}
+              </option>
+            }
+          </select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzRequired>Date</nz-form-label>
+        <nz-form-control>
+          <nz-date-picker
+            id="dateFueled"
+            formControlName="dateFueled"
+            nzFormat="yyyy-MM-dd"
+          ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="rate" nzRequired
+          >Rate</nz-form-label
+        >
+        <nz-form-control>
+          <input
+            id="rate"
+            nz-input
+            type="number"
+            formControlName="rate"
+            placeholder="Rate"
+            aria-label="Rate"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="quantity" nzRequired
+          >Quantity</nz-form-label
+        >
+        <nz-form-control>
+          <input
+            id="quantity"
+            nz-input
+            type="number"
+            formControlName="quantity"
+            placeholder="Quantity"
+            aria-label="Quantity"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="24" nzFor="odometer" nzRequired
+          >Odometer</nz-form-label
+        >
+        <nz-form-control>
+          <input
+            id="odometer"
+            nz-input
+            type="number"
+            formControlName="odometer"
+            placeholder="Odometer"
+            aria-label="Odometer"
+          />
+        </nz-form-control>
+      </nz-form-item>
+
+      <div style="text-align: right">
+        <button nz-button nzType="default" type="button" (click)="closeModal()">
+          Cancel
+        </button>
+        <button
+          nz-button
+          nzType="primary"
+          type="submit"
+          [nzLoading]="isSubmitting"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>

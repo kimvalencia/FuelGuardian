@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { FuelSessionsComponent } from './fuel-sessions.component';
 
 describe('FuelSessionsComponent', () => {
@@ -8,9 +7,8 @@ describe('FuelSessionsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FuelSessionsComponent]
-    })
-    .compileComponents();
+      imports: [FuelSessionsComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FuelSessionsComponent);
     component = fixture.componentInstance;
@@ -19,5 +17,10 @@ describe('FuelSessionsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should expose the add modal state', () => {
+    component.openAddModal();
+    expect(component.isModalVisible).toBeTrue();
   });
 });
