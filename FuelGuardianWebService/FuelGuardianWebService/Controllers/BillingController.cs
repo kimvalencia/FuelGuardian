@@ -6,6 +6,8 @@ using Mapster;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FuelGuardianWebService.Controllers
 {
@@ -23,7 +25,7 @@ namespace FuelGuardianWebService.Controllers
         [ResponseCache(Duration = 60)]
         public async Task<IActionResult> GetAllBilling()
         {
-            var billings = await dbContext.BillingHeaders.OrderByDescending(q=>q.EndDate).ToListAsync();
+            var billings = await dbContext.BillingHeaders.OrderByDescending(q => q.EndDate).ToListAsync();
 
             return Ok(billings);
         }
@@ -31,8 +33,38 @@ namespace FuelGuardianWebService.Controllers
         [HttpGet, Route("{Id}")]
         public async Task<IActionResult> GetBillingById([FromRoute] int Id)
         {
-            var billing = await dbContext.BillingHeaders.Include(q=>q.Details).FirstOrDefaultAsync(x => x.Id == Id);
-            return Ok(billing);
+            var billing = await dbContext.BillingHeaders
+                .Include(q => q.Details)
+                .ThenInclude(q => q.FuelUsage)
+                .Include(q => q.Details)
+                .ThenInclude(q => q.FuelSession)
+                .FirstOrDefaultAsync(x => x.Id == Id);
+
+            if (billing is null)
+            {
+                return NotFound();
+            }
+
+            var response = new BillingHeaderDetailsResponseDto
+            {
+                Id = billing.Id,
+                StartDate = billing.StartDate,
+                EndDate = billing.EndDate,
+                Total = billing.Total,
+                IsPaid = billing.IsPaid,
+                Remarks = billing.Remarks,
+                Details = billing.Details.Select(detail => new BillingHeaderDetailReadDto
+                {
+                    Id = detail.Id,
+                    FuelUsageId = detail.FuelUsageId,
+                    FuelSessionId = detail.FuelSessionId,
+                    Amount = detail.Amount,
+                    TripDate = detail.FuelUsage?.TripStart,
+                    DateFueled = detail.FuelSession?.DateFueled
+                }).ToList()
+            };
+
+            return Ok(response);
         }
 
         [HttpPost]
@@ -42,16 +74,16 @@ namespace FuelGuardianWebService.Controllers
             dbContext.Add(header);
             await dbContext.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetBillingById),new {header.Id } , header);
+            return CreatedAtAction(nameof(GetBillingById), new { header.Id }, header);
         }
 
-        [HttpPost,Route("Compute")]
+        [HttpPost, Route("Compute")]
         public async Task<IActionResult> ComputeBilling([FromBody] int Id)
         {
             //get billing header
-            var header = await dbContext.BillingHeaders.FirstOrDefaultAsync(q=>q.Id==Id);
+            var header = await dbContext.BillingHeaders.FirstOrDefaultAsync(q => q.Id == Id);
 
-            if(header == null)
+            if (header == null)
             {
                 return NotFound($"Billing header with Id {Id} not found.");
             }
@@ -61,35 +93,35 @@ namespace FuelGuardianWebService.Controllers
 
             DateTime StartingDate = header.StartDate;
 
-            var lastRecordedFuelUsage = await dbContext.BillingDetails.Include(q=>q.FuelUsage).Where(q=>q.BillingHeader.EndDate <header.StartDate)
+            var lastRecordedFuelUsage = await dbContext.BillingDetails.Include(q => q.FuelUsage).Where(q => q.BillingHeader.EndDate < header.StartDate)
                 .OrderByDescending(q => q.FuelUsage.TripEnd).FirstOrDefaultAsync();
 
-            if(lastRecordedFuelUsage != null)
+            if (lastRecordedFuelUsage != null)
             {
                 StartingDate = lastRecordedFuelUsage.FuelUsage.TripEnd.AddDays(1);
             }
 
-        ////get previous billing and get the last session included
-        //var lastBilling = await dbContext.BillingHeaders.Where(q => q.EndDate < header.StartDate).OrderByDescending(q=>q.EndDate).FirstOrDefaultAsync();
+            ////get previous billing and get the last session included
+            //var lastBilling = await dbContext.BillingHeaders.Where(q => q.EndDate < header.StartDate).OrderByDescending(q=>q.EndDate).FirstOrDefaultAsync();
 
-        //if (lastBilling is not null)
-        //{
-        //    //get the last fuel usage date
-        //    var lastFuelUsage = await dbContext.BillingDetails.Include(q => q.FuelUsage).Where(q => q.BillingHeaderId == lastBilling.Id).OrderByDescending(q=>q.FuelUsage.TripStart).FirstOrDefaultAsync();
+            //if (lastBilling is not null)
+            //{
+            //    //get the last fuel usage date
+            //    var lastFuelUsage = await dbContext.BillingDetails.Include(q => q.FuelUsage).Where(q => q.BillingHeaderId == lastBilling.Id).OrderByDescending(q=>q.FuelUsage.TripStart).FirstOrDefaultAsync();
 
-        //    if(lastFuelUsage is not null)
-        //    {
-        //        StartingDate = lastFuelUsage.FuelUsage.TripStart.AddDays(1);
-        //    }
-        //}
+            //    if(lastFuelUsage is not null)
+            //    {
+            //        StartingDate = lastFuelUsage.FuelUsage.TripStart.AddDays(1);
+            //    }
+            //}
 
 
 
-        // get fuel usages
-        var usages = await dbContext.FuelUsages
-                .Where(q => q.TripEnd >= StartingDate && q.TripEnd <= header.EndDate)
-                .OrderBy(q=>q.TripEnd)
-                .ToListAsync();
+            // get fuel usages
+            var usages = await dbContext.FuelUsages
+                    .Where(q => q.TripEnd >= StartingDate && q.TripEnd <= header.EndDate)
+                    .OrderBy(q => q.TripEnd)
+                    .ToListAsync();
 
             if (usages.Any())
             {
