@@ -6,76 +6,82 @@
     </button>
   </ng-template>
 
-  <ng-container *ngIf="!selectedBillingId; else detailsView">
-    <nz-table
-      #billingTable
-      [nzData]="billings"
-      [nzLoading]="isLoading"
-      [nzBordered]="true"
-      [nzPageSize]="10"
-      [nzFrontPagination]="true"
-      [nzNoResult]="'No billing headers found.'"
-    >
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Start Date</th>
-          <th scope="col">End Date</th>
-          <th scope="col">Total</th>
-          <th scope="col">Status</th>
-          <th scope="col">Remarks</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="let billing of billingTable.data; trackBy: trackById"
-          (click)="selectBilling(billing)"
-          style="cursor: pointer"
+  <div class="billing-view-shell">
+    <div class="view-panel" [class.is-active]="!selectedBillingId">
+      <ng-container *ngIf="!selectedBillingId">
+        <nz-table
+          #billingTable
+          [nzData]="billings"
+          [nzLoading]="isLoading"
+          [nzBordered]="true"
+          [nzPageSize]="10"
+          [nzFrontPagination]="true"
+          [nzNoResult]="'No billing headers found.'"
         >
-          <td>{{ billing.id }}</td>
-          <td>{{ billing.startDate | date: "mediumDate" }}</td>
-          <td>{{ billing.endDate | date: "mediumDate" }}</td>
-          <td>{{ billing.total | currency: "PHP" }}</td>
-          <td>
-            <nz-tag [nzColor]="billing.isPaid ? 'green' : 'default'">
-              {{ billing.isPaid ? "Paid" : "Open" }}
-            </nz-tag>
-          </td>
-          <td>{{ billing.remarks || "—" }}</td>
-          <td (click)="$event.stopPropagation()">
-            <button
-              nz-button
-              nzType="default"
-              nzSize="small"
-              nz-popconfirm
-              nzPopconfirmTitle="Compute this billing?"
-              nzPopconfirmPlacement="left"
-              (nzOnConfirm)="computeBilling(billing)"
-              (click)="$event.stopPropagation()"
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Start Date</th>
+              <th scope="col">End Date</th>
+              <th scope="col">Total</th>
+              <th scope="col">Status</th>
+              <th scope="col">Remarks</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let billing of billingTable.data; trackBy: trackById"
+              (click)="selectBilling(billing)"
+              style="cursor: pointer"
             >
-              Compute
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </nz-table>
-  </ng-container>
-
-  <ng-template #detailsView>
-    <div>
-      <button
-        nz-button
-        nzType="default"
-        style="margin-bottom: 16px"
-        (click)="backToList()"
-      >
-        <span nz-icon nzType="arrow-left"></span>
-        Back
-      </button>
-      <app-billing-details
-        [billingId]="selectedBillingId"
-      ></app-billing-details>
+              <td>{{ billing.id }}</td>
+              <td>{{ billing.startDate | date: "mediumDate" }}</td>
+              <td>{{ billing.endDate | date: "mediumDate" }}</td>
+              <td>{{ billing.total | currency: "PHP" }}</td>
+              <td>
+                <nz-tag [nzColor]="billing.isPaid ? 'green' : 'default'">
+                  {{ billing.isPaid ? "Paid" : "Open" }}
+                </nz-tag>
+              </td>
+              <td>{{ billing.remarks || "—" }}</td>
+              <td (click)="$event.stopPropagation()">
+                <button
+                  nz-button
+                  nzType="default"
+                  nzSize="small"
+                  nz-popconfirm
+                  nzPopconfirmTitle="Compute this billing?"
+                  nzPopconfirmPlacement="left"
+                  (nzOnConfirm)="computeBilling(billing)"
+                  (click)="$event.stopPropagation()"
+                >
+                  Compute
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </ng-container>
     </div>
-  </ng-template>
+
+    <div class="view-panel" [class.is-active]="!!selectedBillingId">
+      <ng-container *ngIf="selectedBillingId">
+        <div class="detail-view">
+          <button
+            nz-button
+            id="btnBack"
+            nzType="default"
+            (click)="backToList()"
+          >
+            <span nz-icon nzType="arrow-left" nzTheme="outline"></span>
+            <span style="margin-left: 8px">Back</span>
+          </button>
+          <app-billing-details
+            [billingId]="selectedBillingId"
+          ></app-billing-details>
+        </div>
+      </ng-container>
+    </div>
+  </div>
 </nz-card>

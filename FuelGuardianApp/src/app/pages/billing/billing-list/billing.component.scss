@@ -1,0 +1,35 @@
+.billing-view-shell {
+  position: relative;
+  min-height: 320px;
+  overflow: hidden;
+}
+
+.view-panel {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+}
+
+.view-panel.is-active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  position: relative;
+}
+
+.detail-view {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#btnBack {
+  margin-bottom: 16px;
+  width: fit-content;
+}

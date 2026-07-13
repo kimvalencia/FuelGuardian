@@ -32,6 +32,7 @@ import { NzButtonComponent } from 'ng-zorro-antd/button';
 import { NzWaveDirective } from 'ng-zorro-antd/core/wave';
 import { ɵNzTransitionPatchDirective } from 'ng-zorro-antd/core/transition-patch';
 import { HttpClientService } from '../../services/api/http-client-service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 interface IVehicle {
   id: number;
@@ -63,6 +64,7 @@ interface IVehicle {
 export class AddTripComponent implements OnInit, OnChanges {
   private http = inject(FuelUsagesApiService);
   private httpClient = inject(HttpClientService);
+  private messageService = inject(NzMessageService);
 
   public addTripForm!: FormGroup;
   public isSaving: boolean = false;
@@ -159,16 +161,18 @@ export class AddTripComponent implements OnInit, OnChanges {
       this.http.create(_trip).subscribe({
         next: () => {
           this.isSaving = false;
+          this.messageService.success('Trip added successfully', {
+            nzDuration: 3000,
+          });
+          this.buildForm();
+          this.loadVehicles();
+          this.onSuccess.emit(true);
         },
         error: (error) => {
           console.error('Error creating trip', error);
           this.isSaving = false;
         },
       });
-
-      this.buildForm();
-      this.loadVehicles();
-      this.onSuccess.emit(true);
     } else {
       this.isSaving = false;
     }
