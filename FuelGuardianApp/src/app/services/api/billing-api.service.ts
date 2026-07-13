@@ -7,6 +7,8 @@ export interface BillingDetailDto {
   fuelUsageId: number;
   fuelSessionId: number;
   amount: number;
+  tripDate?: string | null;
+  dateFueled?: string | null;
 }
 
 export interface BillingHeaderDto {

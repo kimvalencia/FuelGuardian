@@ -1,28 +1,70 @@
-<div *ngIf="!isLoading && billing; else loading">
-  <p><strong>Billing ID:</strong> {{ billing.id }}</p>
-  <p>
-    <strong>Period:</strong> {{ billing.startDate | date: "mediumDate" }} -
-    {{ billing.endDate | date: "mediumDate" }}
-  </p>
-  <p><strong>Total:</strong> {{ billing.total | currency: "PHP" }}</p>
-  <p>
-    <strong>Status:</strong>
-    <nz-tag [nzColor]="billing.isPaid ? 'green' : 'default'">
-      {{ billing.isPaid ? "Paid" : "Open" }}
-    </nz-tag>
-  </p>
-  <p><strong>Remarks:</strong> {{ billing.remarks || "—" }}</p>
+<div *ngIf="!isLoading && billing; else loading" class="billing-details-card">
+  <div class="billing-summary">
+    <div>
+      <p class="summary-label">Billing ID</p>
+      <p class="summary-value">#{{ billing.id }}</p>
+    </div>
+    <div>
+      <p class="summary-label">Period</p>
+      <p class="summary-value">
+        {{ billing.startDate | date: "mediumDate" }} –
+        {{ billing.endDate | date: "mediumDate" }}
+      </p>
+    </div>
+    <div>
+      <p class="summary-label">Total</p>
+      <p class="summary-value">{{ billing.total | currency: "PHP" }}</p>
+    </div>
+    <div>
+      <p class="summary-label">Status</p>
+      <p class="summary-value">
+        <nz-tag [nzColor]="billing.isPaid ? 'green' : 'default'">
+          {{ billing.isPaid ? "Paid" : "Open" }}
+        </nz-tag>
+      </p>
+    </div>
+  </div>
 
-  <div *ngIf="billing.details?.length; else noDetails">
+  <div class="remarks-block">
+    <strong>Remarks:</strong> {{ billing.remarks || "—" }}
+  </div>
+
+  <div
+    *ngIf="billing.details?.length; else noDetails"
+    class="line-items-section"
+  >
     <h4>Line Items</h4>
-    <ul>
-      <li *ngFor="let detail of billing.details">
-        Fuel Usage #{{ detail.fuelUsageId }} · Fuel Session #{{
-          detail.fuelSessionId
-        }}
-        · Amount {{ detail.amount | currency: "PHP" }}
-      </li>
-    </ul>
+    <nz-table
+      #lineItemsTable
+      [nzData]="billing.details || []"
+      [nzBordered]="true"
+      [nzSize]="'middle'"
+      [nzFrontPagination]="true"
+      [nzNoResult]="'No line items found.'"
+    >
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Trip Date</th>
+          <th scope="col">Fuel Date</th>
+          <th scope="col">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let detail of lineItemsTable.data; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>
+            {{ detail.tripDate ? (detail.tripDate | date: "mediumDate") : "—" }}
+          </td>
+          <td>
+            {{
+              detail.dateFueled ? (detail.dateFueled | date: "mediumDate") : "—"
+            }}
+          </td>
+          <td>{{ detail.amount | currency: "PHP" }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
   </div>
   <ng-template #noDetails>
     <p>No details available for this billing header.</p>

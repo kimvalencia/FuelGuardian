@@ -3,6 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzTableModule } from 'ng-zorro-antd/table';
 import {
   BillingApiService,
   BillingHeaderDto,
@@ -11,7 +12,14 @@ import {
 @Component({
   selector: 'app-billing-details',
   standalone: true,
-  imports: [CommonModule, NzButtonModule, NzCardModule, NzTagModule, DatePipe],
+  imports: [
+    CommonModule,
+    NzButtonModule,
+    NzCardModule,
+    NzTagModule,
+    NzTableModule,
+    DatePipe,
+  ],
   templateUrl: './billing-details.component.html',
   styleUrl: './billing-details.component.scss',
 })
