@@ -1,0 +1,33 @@
+<div *ngIf="!isLoading && billing; else loading">
+  <p><strong>Billing ID:</strong> {{ billing.id }}</p>
+  <p>
+    <strong>Period:</strong> {{ billing.startDate | date: "mediumDate" }} -
+    {{ billing.endDate | date: "mediumDate" }}
+  </p>
+  <p><strong>Total:</strong> {{ billing.total | currency: "PHP" }}</p>
+  <p>
+    <strong>Status:</strong>
+    <nz-tag [nzColor]="billing.isPaid ? 'green' : 'default'">
+      {{ billing.isPaid ? "Paid" : "Open" }}
+    </nz-tag>
+  </p>
+  <p><strong>Remarks:</strong> {{ billing.remarks || "—" }}</p>
+
+  <div *ngIf="billing.details?.length; else noDetails">
+    <h4>Line Items</h4>
+    <ul>
+      <li *ngFor="let detail of billing.details">
+        Fuel Usage #{{ detail.fuelUsageId }} · Fuel Session #{{
+          detail.fuelSessionId
+        }}
+        · Amount {{ detail.amount | currency: "PHP" }}
+      </li>
+    </ul>
+  </div>
+  <ng-template #noDetails>
+    <p>No details available for this billing header.</p>
+  </ng-template>
+</div>
+<ng-template #loading>
+  <p>Loading billing details...</p>
+</ng-template>
