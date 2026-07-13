@@ -1,1 +1,45 @@
-<p>billing works!</p>
+<nz-card [nzTitle]="'Billing'" [nzExtra]="refreshButton">
+  <ng-template #refreshButton>
+    <button nz-button nzType="primary" (click)="loadBillings()">
+      <span nz-icon nzType="reload"></span>
+      Refresh
+    </button>
+  </ng-template>
+
+  <nz-table
+    #billingTable
+    [nzData]="billings"
+    [nzLoading]="isLoading"
+    [nzBordered]="true"
+    [nzPageSize]="10"
+    [nzShowSizeChanger]="true"
+    [nzShowQuickJumper]="true"
+    [nzFrontPagination]="false"
+    [nzNoResult]="'No billing headers found.'"
+  >
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">End Date</th>
+        <th scope="col">Total</th>
+        <th scope="col">Status</th>
+        <th scope="col">Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let billing of billings; trackBy: trackById">
+        <td>{{ billing.id }}</td>
+        <td>{{ billing.startDate | date: "mediumDate" }}</td>
+        <td>{{ billing.endDate | date: "mediumDate" }}</td>
+        <td>{{ billing.total | currency: "PHP" }}</td>
+        <td>
+          <nz-tag [nzColor]="billing.isPaid ? 'green' : 'default'">
+            {{ billing.isPaid ? "Paid" : "Open" }}
+          </nz-tag>
+        </td>
+        <td>{{ billing.remarks || "—" }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>

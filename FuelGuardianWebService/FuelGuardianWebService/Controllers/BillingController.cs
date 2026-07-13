@@ -23,7 +23,7 @@ namespace FuelGuardianWebService.Controllers
         [ResponseCache(Duration = 60)]
         public async Task<IActionResult> GetAllBilling()
         {
-            var billings = await dbContext.BillingHeaders.ToListAsync();
+            var billings = await dbContext.BillingHeaders.OrderByDescending(q=>q.EndDate).ToListAsync();
 
             return Ok(billings);
         }
