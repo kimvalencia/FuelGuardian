@@ -12,7 +12,7 @@ describe('BillingComponent', () => {
   beforeEach(async () => {
     billingApiService = jasmine.createSpyObj<BillingApiService>(
       'BillingApiService',
-      ['getAll'],
+      ['getAll', 'getById'],
     );
     billingApiService.getAll.and.returnValue(
       of([
@@ -25,6 +25,19 @@ describe('BillingComponent', () => {
           remarks: 'Test billing',
         },
       ]),
+    );
+    billingApiService.getById.and.returnValue(
+      of({
+        id: 1,
+        startDate: '2025-01-01T00:00:00Z',
+        endDate: '2025-01-31T00:00:00Z',
+        total: 125.5,
+        isPaid: false,
+        remarks: 'Test billing',
+        details: [
+          { id: 10, fuelUsageId: 20, fuelSessionId: 30, amount: 125.5 },
+        ],
+      }),
     );
 
     await TestBed.configureTestingModule({
@@ -41,5 +54,12 @@ describe('BillingComponent', () => {
     expect(component).toBeTruthy();
     expect(billingApiService.getAll).toHaveBeenCalled();
     expect(component.billings).toHaveSize(1);
+  });
+
+  it('should select a billing header to show details', () => {
+    component.selectBilling(component.billings[0]);
+
+    expect(component.selectedBilling?.id).toBe(1);
+    expect(billingApiService.getById).toHaveBeenCalledWith(1);
   });
 });

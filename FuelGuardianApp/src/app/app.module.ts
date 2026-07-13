@@ -7,7 +7,12 @@ import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient, HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpClientModule,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzTableModule } from 'ng-zorro-antd/table';
@@ -34,40 +39,46 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { provideRouter, RouterOutlet } from '@angular/router';
 import { routes } from './app.routes';
-
 registerLocaleData(en);
 
-@NgModule({ declarations: [AppComponent], bootstrap: [AppComponent], imports: [BrowserModule,
-        AppRoutingModule,
-        FormsModule,
-        BrowserAnimationsModule,
-        NzLayoutModule,
-        NzTableModule,
-        NzDividerModule,
-        NzButtonModule,
-        NzIconModule,
-        NzModalModule,
-        ReactiveFormsModule,
-        NzFormModule,
-        NzDatePickerModule,
-        NzMenuModule,
-        NzCardModule,
-        NzStatisticModule,
-        NzListModule,
-        NzAvatarModule,
-        NzBadgeModule,
-        NzDropDownModule,
-        NzTagModule,
-        NzInputModule, TripComponent,
-        AddTripComponent,
-        NzDemoMenuInlineCollapsedComponent,
-        NzTooltipModule,
-        NzBreadCrumbModule,
-        RouterOutlet,
-        HomeComponent], 
-        providers: [
-        { provide: NZ_I18N, useValue: en_US },
-        provideHttpClient(withInterceptorsFromDi()),
-        provideRouter(routes)
-    ] })
-export class AppModule { }
+@NgModule({
+  declarations: [AppComponent],
+  bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    NzLayoutModule,
+    NzTableModule,
+    NzDividerModule,
+    NzButtonModule,
+    NzIconModule,
+    NzModalModule,
+    ReactiveFormsModule,
+    NzFormModule,
+    NzDatePickerModule,
+    NzMenuModule,
+    NzCardModule,
+    NzStatisticModule,
+    NzListModule,
+    NzAvatarModule,
+    NzBadgeModule,
+    NzDropDownModule,
+    NzTagModule,
+    NzInputModule,
+    TripComponent,
+    AddTripComponent,
+    NzDemoMenuInlineCollapsedComponent,
+    NzTooltipModule,
+    NzBreadCrumbModule,
+    RouterOutlet,
+    HomeComponent,
+  ],
+  providers: [
+    { provide: NZ_I18N, useValue: en_US },
+    provideHttpClient(withInterceptorsFromDi()),
+    provideRouter(routes),
+  ],
+})
+export class AppModule {}

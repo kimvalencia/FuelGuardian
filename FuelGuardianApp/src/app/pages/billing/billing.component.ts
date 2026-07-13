@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import {
   BillingApiService,
   BillingHeaderDto,
 } from '../../services/api/billing-api.service';
+import { BillingDetailsComponent } from './billing-details/billing-details.component';
 
 @Component({
   selector: 'app-billing',
@@ -15,6 +17,7 @@ import {
     CommonModule,
     NzButtonModule,
     NzCardModule,
+    NzModalModule,
     NzTableModule,
     NzTagModule,
     DatePipe,
@@ -24,9 +27,14 @@ import {
 })
 export class BillingComponent implements OnInit {
   billings: BillingHeaderDto[] = [];
+  selectedBilling: BillingHeaderDto | null = null;
   isLoading = false;
+  isDetailsLoading = false;
 
-  constructor(private readonly billingApi: BillingApiService) {}
+  constructor(
+    private readonly billingApi: BillingApiService,
+    private readonly modalService: NzModalService,
+  ) {}
 
   ngOnInit(): void {
     this.loadBillings();
@@ -43,6 +51,24 @@ export class BillingComponent implements OnInit {
         console.error('Unable to load billing headers', error);
         this.isLoading = false;
       },
+    });
+  }
+
+  selectBilling(billing: BillingHeaderDto): void {
+    if (!billing?.id) {
+      return;
+    }
+
+    this.openDetailsModal(billing.id);
+  }
+
+  openDetailsModal(billingId: number): void {
+    this.modalService.create({
+      nzTitle: `Billing Details #${billingId}`,
+      nzContent: BillingDetailsComponent,
+      nzWidth: 720,
+      nzData: { billingId },
+      nzFooter: null,
     });
   }
 

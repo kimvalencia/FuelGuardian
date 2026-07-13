@@ -28,7 +28,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let billing of billings; trackBy: trackById">
+      <tr
+        *ngFor="let billing of billings; trackBy: trackById"
+        (click)="selectBilling(billing)"
+        style="cursor: pointer"
+      >
         <td>{{ billing.id }}</td>
         <td>{{ billing.startDate | date: "mediumDate" }}</td>
         <td>{{ billing.endDate | date: "mediumDate" }}</td>
