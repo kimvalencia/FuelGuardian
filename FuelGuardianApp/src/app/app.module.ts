@@ -39,6 +39,7 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { provideRouter, RouterOutlet } from '@angular/router';
 import { routes } from './app.routes';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 registerLocaleData(en);
 
 @NgModule({
@@ -79,6 +80,7 @@ registerLocaleData(en);
     { provide: NZ_I18N, useValue: en_US },
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter(routes),
+    provideCharts(withDefaultRegisterables()),
   ],
 })
 export class AppModule {}
