@@ -3,6 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import {
@@ -18,6 +19,7 @@ import { BillingDetailsComponent } from './billing-details/billing-details.compo
     NzButtonModule,
     NzCardModule,
     NzModalModule,
+    NzPopconfirmModule,
     NzTableModule,
     NzTagModule,
     DatePipe,
@@ -60,6 +62,21 @@ export class BillingComponent implements OnInit {
     }
 
     this.openDetailsModal(billing.id);
+  }
+
+  computeBilling(billing: BillingHeaderDto): void {
+    if (!billing?.id) {
+      return;
+    }
+
+    this.billingApi.compute(billing.id).subscribe({
+      next: () => {
+        this.loadBillings();
+      },
+      error: (error) => {
+        console.error('Unable to compute billing', error);
+      },
+    });
   }
 
   openDetailsModal(billingId: number): void {

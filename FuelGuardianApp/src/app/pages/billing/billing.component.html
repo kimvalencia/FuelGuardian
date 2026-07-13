@@ -25,6 +25,7 @@
         <th scope="col">Total</th>
         <th scope="col">Status</th>
         <th scope="col">Remarks</th>
+        <th scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -43,6 +44,20 @@
           </nz-tag>
         </td>
         <td>{{ billing.remarks || "—" }}</td>
+        <td (click)="$event.stopPropagation()">
+          <button
+            nz-button
+            nzType="default"
+            nzSize="small"
+            nz-popconfirm
+            nzPopconfirmTitle="Compute this billing?"
+            nzPopconfirmPlacement="left"
+            (nzOnConfirm)="computeBilling(billing)"
+            (click)="$event.stopPropagation()"
+          >
+            Compute
+          </button>
+        </td>
       </tr>
     </tbody>
   </nz-table>

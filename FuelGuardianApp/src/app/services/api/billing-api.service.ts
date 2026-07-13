@@ -32,4 +32,8 @@ export class BillingApiService {
   getById(id: number): Observable<BillingHeaderDto> {
     return this.http.get<BillingHeaderDto>(`${this.baseEndpoint}/${id}`);
   }
+
+  compute(id: number): Observable<BillingHeaderDto> {
+    return this.http.post<BillingHeaderDto>(`${this.baseEndpoint}/Compute`, id);
+  }
 }
