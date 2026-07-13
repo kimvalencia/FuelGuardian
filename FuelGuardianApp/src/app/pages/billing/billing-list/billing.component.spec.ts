@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { BillingComponent } from './billing.component';
-import { BillingApiService } from '../../services/api/billing-api.service';
+import { BillingApiService } from '../../../services/api/billing-api.service';
 
 describe('BillingComponent', () => {
   let component: BillingComponent;
