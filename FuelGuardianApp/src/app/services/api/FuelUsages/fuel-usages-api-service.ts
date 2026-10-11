@@ -6,7 +6,6 @@ import { API_ENDPOINTS } from "../Endpoints";
 
 @Injectable({providedIn: 'root'})
 export class FuelUsagesApiService {
-    private baseURL = 'https://localhost:7154/'
 
     constructor(private http: HttpClientService) { 
 

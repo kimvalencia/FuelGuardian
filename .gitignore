@@ -37,6 +37,10 @@
 /FuelGuardianApptestem.log
 /FuelGuardianApp/typings
 
+# Local environment configuration (see FuelGuardianApp/.env.example)
+/FuelGuardianApp/.env
+/FuelGuardianApp/src/assets/env.js
+
 # System files
 /FuelGuardianApp/.DS_Store
 /FuelGuardianApp/Thumbs.db

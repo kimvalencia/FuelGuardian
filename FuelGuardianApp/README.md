@@ -14,6 +14,24 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
+## Environment configuration
+
+The backend base URL is read from a `.env` file at the project root, so it can be
+changed without touching application code:
+
+```sh
+# FuelGuardianApp/.env
+BASE_URL=http://localhost/fuelguardianservice/
+```
+
+Copy `.env.example` to `.env` and adjust `BASE_URL` as needed (include the
+trailing slash). `.env` is git-ignored; `.env.example` documents the available keys.
+
+`npm run config` reads `.env` and generates `src/assets/env.js`, which exposes the
+values on `window.__env` at runtime. This runs automatically before `start`,
+`build`, `watch`, and `test` via npm lifecycle hooks. `HttpClientService` resolves
+every request against the base URL exposed by `AppConfigService`.
+
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
